@@ -59,7 +59,8 @@ class Game:
     def play_rounds(self):
         for turn in range(self.num_of_turns):
             opponent_move = self.translate_move(self.opponent_player.planned_moves[turn])
-            my_move = self.translate_move(self.my_player.planned_moves[turn])
+            desired_outcome = self.translate_outcome(self.my_player.planned_moves[turn])
+            my_move = self.calcualte_move_for_desired_result(opponent_move, desired_outcome)
 
             match self.game_logic(opponent_move, my_move):
                 case 'draw':
@@ -106,6 +107,26 @@ class Game:
                 return 'paper'
             case 'C' | 'Z':
                 return 'scissors'
+
+    def translate_outcome(self, encrypted_outcome):
+        match encrypted_outcome:
+            case 'X':
+                return 'lose'
+            case 'Y':
+                return 'draw'
+            case 'Z':
+                return 'win'
+
+    def calcualte_move_for_desired_result(self, opponent_move, desired_result):
+        move_list = ['paper', 'rock', 'scissors']
+        opponent_index = move_list.index(opponent_move)
+        match desired_result:
+            case 'lose':
+                return move_list[(opponent_index + 1) % 3]
+            case 'draw':
+                return move_list[opponent_index]
+            case 'win':
+                return move_list[(opponent_index - 1) % 3]
 
 
 def process_input(filename):
