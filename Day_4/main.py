@@ -27,15 +27,20 @@ def process_input(filename):
     assignment_pairs = []
     with open(filename, 'r') as input_file:
         for line in input_file:
-            # print((line.strip().split(',')))
             assignment_pairs.append(AssignmentPair(*line.strip().split(',')))
 
-    count = 0
+    subset_count = 0
+    for pair in assignment_pairs:
+        if pair.detect_subsets():
+            subset_count += 1
+
+    overlap_count = 0
     for pair in assignment_pairs:
         if pair.detect_overlap():
-            count += 1
+            overlap_count += 1
 
-    print(f'Total pairs: {count}')
+    print(f'Total pairs with a subset: {subset_count}')
+    print(f'Total pairs that overlap: {overlap_count}')
 
 
 if __name__ == '__main__':
