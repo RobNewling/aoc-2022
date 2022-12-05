@@ -15,6 +15,13 @@ class AssignmentPair:
         else:
             return False
 
+    def detect_overlap(self):
+        # true if one list overlaps the other at all
+        if set(self.section1).intersection(self.section2):
+            return True
+        else:
+            return False
+
 
 def process_input(filename):
     assignment_pairs = []
@@ -25,7 +32,7 @@ def process_input(filename):
 
     count = 0
     for pair in assignment_pairs:
-        if pair.detect_subsets():
+        if pair.detect_overlap():
             count += 1
 
     print(f'Total pairs: {count}')
